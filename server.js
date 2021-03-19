@@ -17,14 +17,17 @@ const transformGoogleProfile = (profile) => ({
 // Register Facebook Passport strategy
 passport.use(new FacebookStrategy(facebook,
     async (accessToken, refreshToken, profile, done)
-    => done(null, transformFacebookProfile(profile._json))
+    => {
+      //console.log(JSON.stringify(profile));
+      done(null, transformFacebookProfile(profile._json))
+    }
 ));
 
 // Register Google Passport strategy
 passport.use(new GoogleStrategy(google,
   async (accessToken, refreshToken, profile, done)
     => {
-      console.log(JSON.stringify(profile));
+      //console.log(JSON.stringify(profile));
       done(null, transformGoogleProfile(profile._json));
     }
 ));
@@ -57,9 +60,9 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google' }),
   (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
 
-// Launch the server on the port 3000
-const server = app.listen(3000, () => {
+// Launch the server on the port 9311 
+const server = app.listen(9311, () => {
   const { address, port } = server.address();
-  console.log(server.address());
+  //console.log(server.address());
   console.log(`Listening at http://${address}:${port}`);
 });
