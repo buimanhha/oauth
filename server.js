@@ -2,7 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import FacebookStrategy from 'passport-facebook';
 import GoogleStrategy from 'passport-google-oauth20';
-import { facebook, google } from './config';
+import { process_port, facebook, google } from './config';
 
 const transformFacebookProfile = (profile) => ({
   name: profile.name,
@@ -59,9 +59,8 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'em
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google' }),
   (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
-
-// Launch the server on the port 9311 
-const server = app.listen(9311, () => {
+ 
+const server = app.listen(process_port, () => {
   const { address, port } = server.address();
   //console.log(server.address());
   console.log(`Listening at http://${address}:${port}`);
